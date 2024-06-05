@@ -1,0 +1,55 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Enterprise {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String
+  phoneNumber String
+  address     String?
+  industryType String?
+  createdAt   DateTime     @default(now())
+  sensorData  SensorData[]
+  gasEmissions GasEmission[]
+  
+  @@map("enterprises")
+}
+
+model SensorData {
+  id           Int        @id @default(autoincrement())
+  timestamp    DateTime   @default(now())
+  temperature  Float
+  humidity     Float
+  co2Level     Float
+  coLevel      Float
+  ch4Level     Float
+  pm25         Float
+  pm10         Float
+  nh3Level     Float
+  no2Level     Float
+  ozoneLevel   Float
+  enterprise   Enterprise @relation(fields: [enterpriseId], references: [id])
+  enterpriseId Int
+  
+  @@map("sensor_data")
+}
+
+model GasEmission {
+  id           Int        @id @default(autoincrement())
+  timestamp    DateTime   @default(now())
+  coLevel      Float
+  ch4Level     Float
+  nh3Level     Float
+  no2Level     Float
+  ozoneLevel   Float
+  enterprise   Enterprise @relation(fields: [enterpriseId], references: [id])
+  enterpriseId Int
+  
+  @@map("gas_emissions")
+}
