@@ -174,6 +174,9 @@ app.get("/sensor/:enterpriseId", async(request, reply)=>{
             enterprise:{
                 id: enterpriseId
             }
+        },
+        include:{
+            enterprise: true
         }
     })
 
@@ -193,7 +196,7 @@ app.get("/sensor/:enterpriseId", async(request, reply)=>{
                 pm25: parseFloat((Math.random() * 25).toFixed(2))
             }
         })
-    }, 1000)
+    }, 3000)
     
     
     return reply.status(200).send({ sensorDatas })

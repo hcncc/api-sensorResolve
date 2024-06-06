@@ -1,0 +1,25 @@
+POST http://localhost:3333/post
+Content-Type: application/json
+
+{
+    "title": "Pessoal do Team morrendo de sono",
+    "description": "Estamos estudando e praticando"
+}
+
+###
+GET http://localhost:3333/post
+
+###
+PUT http://localhost:3333/post/3
+Content-Type: application/json
+
+{
+    "title": "Título do ANdré",
+    "description": "Descrição da Emília e do Eurico"
+}
+
+###
+GET http://localhost:3333/post/2
+
+### 
+DELETE http://localhost:3333/post/3
