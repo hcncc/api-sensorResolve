@@ -203,4 +203,5 @@ app.listen({
     port: process.env.PORT ? Number(process.env.PORT) : 3333, 
 })
     .then(() => console.log(`Server SensorResolve started in port: ${process.env.PORT ?? 3333}`))
+    .catch(error => console.log("Server starting error..."))
 
