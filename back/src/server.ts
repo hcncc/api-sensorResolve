@@ -177,6 +177,25 @@ app.get("/sensor/:enterpriseId", async(request, reply)=>{
         }
     })
 
+    setInterval(async () => {
+        await prisma.sensorData.update({
+            where: {
+                id: 1
+            },
+            data: {
+                ch4Level: parseFloat((Math.random() * 2).toFixed(2)), 
+                co2Level: parseFloat((Math.random() * 2000 + 400).toFixed(2)),
+                coLevel: parseFloat((Math.random() * 50).toFixed(2)), 
+                nh3Level: parseFloat((Math.random() * 10).toFixed(2)), 
+                no2Level: parseFloat((Math.random() * 0.2).toFixed(2)), 
+                ozoneLevel: parseFloat((Math.random() * 0.1).toFixed(2)), 
+                pm10: parseFloat((Math.random() * 50).toFixed(2)), 
+                pm25: parseFloat((Math.random() * 25).toFixed(2))
+            }
+        })
+    }, 1000)
+    
+    
     return reply.status(200).send({ sensorDatas })
 })
 
