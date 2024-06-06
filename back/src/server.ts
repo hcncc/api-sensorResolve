@@ -199,6 +199,9 @@ app.get("/sensor/:enterpriseId", async(request, reply)=>{
     return reply.status(200).send({ sensorDatas })
 })
 
-app.listen({ port: process.env.PORT ? Number(process.env.PORT) : 3333, host: "0.0.0.0" })
+app.listen({ 
+    host: '0.0.0.0', 
+    port: process.env.PORT ? Number(process.env.PORT) : 3333, 
+})
     .then(() => console.log(`Server SensorResolve started in port: ${process.env.PORT ?? 3333}`))
 
