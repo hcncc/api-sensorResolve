@@ -6,7 +6,7 @@ import fastifyCors from "@fastify/cors"
 const app = fastify()
 
 app.register(fastifyCors, {
-    origin: '*'
+    origin: '*',
 })
 
 // Enterprises
@@ -18,7 +18,7 @@ app.get("/enterprises", async (request, reply) => {
 })
 
 //add one
-app.post("/enterprise", async (request, reply) => {
+app.post("/enterprises", async (request, reply) => {
     const createEnterpriseSchema = z.object({
         name: z.string(),
         email: z.string(),
@@ -106,6 +106,78 @@ app.delete("/enterprises/:id", async(request, reply)=>{
     })
 
     return reply.status(200).send({message: "deleted success"})
+})
+
+// SensorData
+
+app.post("/sensor", async (request, reply)=>{
+    const createSensorSchema = z.object({
+        temperature: z.number(),
+        humidity: z.number(),
+        co2Level: z.number(),
+        coLevel: z.number(),
+        ch4Level: z.number(),
+        pm25: z.number(),
+        pm10: z.number(),
+        nh3Level: z.number(),
+        no2Level: z.number(),
+        ozoneLevel: z.number(),
+        enterpriseId: z.number().int()
+    })
+
+    const { 
+        ch4Level,
+        co2Level,
+        coLevel,
+        enterpriseId,
+        humidity,
+        nh3Level,
+        no2Level,
+        ozoneLevel,
+        pm10,
+        pm25,
+        temperature
+     } = createSensorSchema.parse(request.body)
+
+    const sensor = await prisma.sensorData.create({
+        data:{
+            ch4Level,
+            co2Level,
+            coLevel,
+            humidity,
+            nh3Level,
+            no2Level,
+            ozoneLevel,
+            pm10,
+            pm25,
+            temperature,
+            enterprise: {
+                connect:{
+                    id: Number(enterpriseId)
+                }
+            }
+        }
+    })
+
+    return { sensor }
+})
+
+app.get("/sensor/:enterpriseId", async(request, reply)=>{
+    const enterpriseIdSchema = z.object({
+        enterpriseId: z.coerce.number().int()
+    })
+
+    const { enterpriseId } = enterpriseIdSchema.parse(request.params)
+
+    const sensorDatas = await prisma.sensorData.findMany({
+        where:{
+            enterprise:{
+                id: enterpriseId
+            }
+        }
+    })
+
+    return reply.status(200).send({ sensorDatas })
 })
 
 app.listen({ port: process.env.PORT ? Number(process.env.PORT) : 3333 })
