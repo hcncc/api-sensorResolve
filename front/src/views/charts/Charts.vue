@@ -9,8 +9,8 @@
           <li>Monóxido de Carbono (CO): {{data.coLevel}}</li>
           <li>Dióxido de Carbono (CO2): {{ data.co2Level }}</li>
           <li>Metano (CH4): {{ data.ch4Level }}</li>
-          <li>PM 2.5: {{ data.pm25Level }}</li>
-          <li>PM 10: {{ data.pm10Level }}</li>    
+          <li>PM 2.5: {{ data.pm25 }}</li>
+          <li>PM 10: {{ data.pm10 }}</li>    
           <li>Amônia (NH3): {{ data.nh3Level }}</li>    
           <li>Dióxido de Nitrogênio (NO2): {{ data.nh3Level }}</li>    
           <li>Ozônio (O3): {{ data.ozoneLevel }}</li>    
@@ -37,21 +37,22 @@ export default {
   created() {
     setInterval(() => {
       this.fetchSensor();
-    }, 5000);
+    }, 3000);
   },
   methods: {
     async fetchSensor() {
-      try {
-        const response = await fetch("http://localhost:3333/sensor/1");
-        if (!response.ok) {
-          throw new Error("Erro na requisição");
-        }
-        const data = await response.json();
-        this.sensorData = data.sensorDatas
-
-      } catch (error) {
-        console.error("Erro na requisição: ", error);
-      }
+      this.sensorData = [
+          {
+            ch4Level: parseFloat((Math.random() * 2).toFixed(2)), 
+            co2Level: parseFloat((Math.random() * 2000 + 400).toFixed(2)),
+            coLevel: parseFloat((Math.random() * 50).toFixed(2)), 
+            nh3Level: parseFloat((Math.random() * 10).toFixed(2)), 
+            no2Level: parseFloat((Math.random() * 0.2).toFixed(2)), 
+            ozoneLevel: parseFloat((Math.random() * 0.1).toFixed(2)), 
+            pm10: parseFloat((Math.random() * 50).toFixed(2)), 
+            pm25: parseFloat((Math.random() * 25).toFixed(2))
+          }
+        ]
     },
   }
 }
